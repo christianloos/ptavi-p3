@@ -7,61 +7,42 @@ from xml.sax.handler import ContentHandler
 class SmallSMILHandler(ContentHandler):
 
     def __init__ (self):
-        #self.inRoot_Layout = 0
         self.root_layout = ""
-        self.width = ""
-        self.height = ""
-        self.background_color = ""
-        
-        #self.inRegion = 0
         self.region = ""
-        self.id = ""
-        self.top = ""
-        self.bottom = ""
-        self.left = ""
-        self.right =""
-        
-        #self.inImg = 0
         self.img = ""
-        self.src = ""
-        self.begin = ""
-        self.dur = ""
-        
-        #self.inAudio = 0
         self.audio = ""
-        
-        #self.inTextstream = 0
         self.textstream = ""
         
-        self.tags = []
+        self.atr_root_layout = ['wi': 'width', 'he': 'height',
+                                'ba': 'background_color']
+        self.atr_region = ['id': 'id', 'to': 'top', 'bo': 'bottom',
+                           'l': 'left', 'ri': 'right']
+        self.atr_img = ['sr': 'src', 're': 'region',
+                        'be': 'begin','du': 'dur']
+        self.atr_audio = ['sr': 'src', 'be': 'begin', 'du':'dur']
+        self.atr_textstream = ['sr': 'src', 're': 'region']
 
     def startElement(self, name, attrs):
         if name == 'root_layout':
-            self.width = attrs.get('width', "")
-            self.height = attrs.get('height', "")
-            self.background_color = attrs.get('background_color', "")
+            for atributo in self.atr_root_layout:
+                self.atr_root_layout = attrs.get(atributo, '')
+                
         elif name == 'region':
-            self.id = attrs.get('id', "")
-            self.top = attrs.get('top', "")
-            self.bottom = attrs.get('bottom', "")
-            self.left = attrs.get('left', "")
-            self.right = attrs.get('right', "")
+            for atributo in self.atr_region:
+                self.atr_region = attrs.get(atributo, '')
+                
         elif name == 'img':
-            self.src = attrs.get('src', "")
-            self.region = attrs.get('region', "")
-            self.begin = attrs.get('begin', "")
-            self.dur = attrs.get('dur', "")
+            for atributo in self.atr_img:
+                self.atr_img = attrs.get(atributo, '')
+                
         elif name == 'audio':
-            self.src = attrs.get('src', "")
-            self.begin = attrs.get('begin', "")
-            self.dur = attrs.get('dur', "")
-        elif name == 'textstream':
-            self.src = attrs.get('src', "")
-            self.region = attrs.get('region', "")
+            for atributo in self.atr_audio:
+                self.atr_audio = attrs.get(atributo, '')
 
-    def get_tags(self):
-        
-        return self.tags
+        elif name == 'textstream':
+            for atributo in self.atr_textstream:
+                self.atr_textstream = attrs.get(atributo, '')
+                
         
 if __name__ == "__main__":
 
@@ -69,5 +50,3 @@ if __name__ == "__main__":
     handler = SmallSMILHandler()
     parser.setContentHandler(handler)
     parser.parse(open('karaoke.smil')
-    self.tags = handler.get_tags()
-    print(self.tags)
