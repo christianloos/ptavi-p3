@@ -9,7 +9,7 @@ import json
 from urllib.request import urlretrieve
 
 try:
-    file = sys.argv[1]
+    first_json = sys.argv[1]
 except IndexError:
     sys.exit('Usage: python3 karaoke.py file.smil.')
 
@@ -24,28 +24,33 @@ class KaraokeLocal():
         self.atr_list = self.handler.get_tags()
 
     def __str__(self):
-        for ele in self.atributes_list:
-            line = ele[0]
-            atributos = ele[1]
-            for at in ele[1]:
-                if ele[1][at] != "":
-                    line = line + '\t' + at + '=' + '"' + ele[1][at] + '"'
-            print(line)
-            self.datos += line
-
-    def to_json(self, name_json_file):
-        json_file = name_json_file[:-4] + "json"
-        json.dump(self.atr_list, open(json_file, 'w'))
-        return json_file
-        
-    def do_local(self):
-        for list in self.atr_list:
-            atributes = list[1]
+        data = ""
+        for tag in self.atr_list:
+            name = tag[0]
+            data += name
+            atributes = tag[1]
             for atribute in atributes:
-                if atributes[atribute][:7] == "http://":
-                    urlretrieve(atributes[atribute], 
-                                atributes[atribute].split('/')[-1])
-                    atributes[atribute] = atributes[atribute].split('/')[-1]
+                if atributes[atribute] != "":
+                    data += "\t" + atribute + '="' + atributes[atribute] + '"'
+            data += "\n"
+        return data
+           
+
+    def to_json(self, smil_file, json_file = first_json):
+        first_json = sys.argv[1][:-4]+"json"
+        json_file = open(json_file, 'w')
+        json.dump(self.atr_list, json_file)
+
+    def do_local(self):
+        for tag in self.tags:
+            atts = tag[1]
+            for att in atts:
+                if atts[att][0:7] == "http://":
+                    os.system("wget -q " + atts[att])
+                    campos = atts[att].split('/')
+                    atts[att] = campos[-1]    
+        
+    
 
 if __name__ == "__main__":
 
