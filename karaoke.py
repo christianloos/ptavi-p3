@@ -20,7 +20,7 @@ class KaraokeLocal():
         parser = make_parser()
         handler = SmallSMILHandler()
         parser.setContentHandler(handler)
-        parser.parse(open(sys.argv[1]))
+        parser.parse(open(smil_file))
         self.tags = handler.get_tags()
 
     def __srt__(self):
@@ -51,6 +51,7 @@ if __name__ == "__main__":
 
     smil_file = sys.argv[1]
     karaoke = KaraokeLocal()
+    karaoke.__init__()
     karaoke.__srt__()
     karaoke.to_json(smil_file)
     karaoke.do_local()
