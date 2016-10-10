@@ -13,15 +13,15 @@ class SmallSMILHandler(ContentHandler):
         self.atr_img = ['src', 'region', 'begin', 'dur']
         self.atr_audio = ['src', 'begin', 'dur']
         self.atr_textstream = ['src', 'region']
-        
+
         self.tags = {'root_layout': self.atr_root_layout,
                      'region': self.atr_region,
                      'img': self.atr_img,
                      'audio': self.atr_audio,
                      'textstream': self.atr_textstream}
-        self.smil_data = []
-        
+
     def startElement(self, tag, attrs):
+        self.smil_data = {}
         if tag in self.tags:
             for atribute in self.tags[tag]:
                 self.smil_data[atribute] = attrs.get(atribute, "")
