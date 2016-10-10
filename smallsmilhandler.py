@@ -22,7 +22,8 @@ class SmallSMILHandler(ContentHandler):
 
     def startElement(self, tag, attrs):
         self.smil_data = {}
-        if tag in self.tags:
+        self.atr_list.append(tag)
+        if tag in self.tags:            
             for atribute in self.tags[tag]:
                 self.smil_data[atribute] = attrs.get(atribute, "")
             self.atr_list.append([tag, self.smil_data])
