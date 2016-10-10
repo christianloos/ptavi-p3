@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     for element in atr_list:
         line = element [0]
-        atributes = ele [1]
+        atributes = element[1]
         for atribute in element[1]:
             if element[1][atribute] != "":
                 line = line + '\t' + atribute + '=' + '"' + element[1][atribute]
